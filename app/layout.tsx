@@ -15,7 +15,7 @@ const vercettiFont = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com/'),
-  title: "Nipun Kachwaha ✌️",
+  title: "Nipun ✌️",
   description: "A frontend developer by profession, a creative at heart.",
   keywords: "Nipun Kachwaha, Frontend Engineer, React Developer, Three.js, Creative Developer, Web Development, Angular, JavaScript, TypeScript, Portfolio",
   authors: [{ name: "Nipun Kachwaha" }],
