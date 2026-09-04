@@ -16,8 +16,8 @@ const vercettiFont = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com/'),
   title: "Nipun ✌️",
-  description: "A frontend developer by profession, a creative at heart.",
-  keywords: "Nipun Kachwaha, Frontend Engineer, React Developer, Three.js, Creative Developer, Web Development, Angular, JavaScript, TypeScript, Portfolio",
+  description: "A full-stack AI engineer by profession, a creative at heart.",
+  keywords: "Nipun Kachwaha, Full Stack AI Engineer, React Developer, Three.js, Creative Developer, Web Development, Angular, JavaScript, TypeScript, Portfolio",
   authors: [{ name: "Nipun Kachwaha" }],
   creator: "Nipun Kachwaha",
   publisher: "Nipun Kachwaha",
@@ -37,19 +37,19 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Nipun Kachwaha - Frontend Engineer",
-    description: "Frontend engineer by profession, creative at heart.",
+    title: "Nipun Kachwaha - Full Stack AI Engineer",
+    description: "Full-stack AI engineer by profession, creative at heart.",
     siteName: "Nipun Kachwaha's Portfolio",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nipun Kachwaha - Frontend Engineer",
-    description: "Frontend engineer by profession, creative at heart.",
+    title: "Nipun Kachwaha - Full Stack AI Engineer",
+    description: "Full-stack AI engineer by profession, creative at heart.",
   },
   verification: {
-    google: "GsRYY-ivL0F_VKkfs5KAeToliqz0gCrRAJKKmFkAxBA",
+    google: "GsRYY-ivL0F_VKkfs5KAeToliqz0gCrRAJKKmFkAxBQ",
   },
 };
 
