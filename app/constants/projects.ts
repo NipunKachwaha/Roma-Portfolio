@@ -22,20 +22,20 @@ export const PROJECTS: Project[] = [
   },
   {
     title: 'Roomify',
-    date: 'May 2021',
+    date: 'Sep 2026',
     subtext: 'AI-powered architectural visualization platform built with React and Puter; featuring 2D-to-3D photorealistic rendering, serverless workers, high-performance KV storage, and a global community feed.',
     url: '',
   },
   {
-    title: 'Chat bot',
-    date: 'Aug 2024',
-    subtext: 'A streaming chatbot that allows users to switch between different LLMs with custom API keys.',
+    title: 'LLM Arena',
+    date: 'Aug 2026',
+    subtext: 'A platform where users can send a single prompt and watch multiple AI models respond simultaneously, then vote for the best response.',
     url: '',
   },
   {
-    title: 'Word Game',
-    date: 'Oct 2024',
-    subtext: 'This word game app offers single and multiplayer modes where players take turns forming words, each starting with the last letter of the previous word.',
+    title: 'Bookified',
+    date: 'Oct 2026',
+    subtext: 'Voice-first AI book companion platform built with Next.js 16; featuring real-time Vapi voice, ElevenLabs persona synthesis, Clerk authentication, and an interface built with shadcn/ui and Tailwind.',
     url: '',
   },
   {
