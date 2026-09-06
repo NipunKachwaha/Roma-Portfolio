@@ -9,15 +9,15 @@ export const PROJECTS: Project[] = [
     url: 'https://sverkos.vercel.app',
   },
   {
-    title: 'State.js',
-    date: 'Jul 2020',
-    subtext: 'A lightweight library for turning JS objects into observables, providing a convenient API for state management and manipulation.',
+    title: 'Horizon',
+    date: 'Jul 2026',
+    subtext: 'A Modern banking platform for everyone. It offers a seamless banking experience with features like instant payments, budgeting tools, and personalized financial insights.',
     url: '',
   },
   {
-    title: 'change-host',
-    date: 'Jul 2020',
-    subtext: 'A CLI tool to manage /etc/hosts entries for local development. It enables quick and easy mapping of IPs to URLs with a single command.',
+    title: 'Ghost AI',
+    date: 'Jul 2026',
+    subtext: 'A Interactive systems architecture builder. It allows users to design and visualize complex systems, providing a collaborative environment for architects and engineers to create efficient and scalable solutions.',
     url: '',
   },
   {
