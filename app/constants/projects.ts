@@ -6,7 +6,7 @@ export const PROJECTS: Project[] = [
     title: 'Sverkos',
     date: 'Jun 2026',
     subtext: 'A cutting-edge platform for turning ideas into full-stack applications, providing an immersive in-browser IDE and BYOK architecture for seamless AI development.',
-    url: '',
+    url: 'https://sverkos.vercel.app',
   },
   {
     title: 'State.js',
