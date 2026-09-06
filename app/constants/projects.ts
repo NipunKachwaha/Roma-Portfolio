@@ -21,9 +21,9 @@ export const PROJECTS: Project[] = [
     url: '',
   },
   {
-    title: 'Vaccine Slots Discord Bot',
+    title: 'Roomify',
     date: 'May 2021',
-    subtext: 'A Discord Bot that sends alerts for COVID-19 vaccine availability based on PIN/district using public APIs.',
+    subtext: 'AI-powered architectural visualization platform built with React and Puter; featuring 2D-to-3D photorealistic rendering, serverless workers, high-performance KV storage, and a global community feed.',
     url: '',
   },
   {
