@@ -30,7 +30,7 @@ export const PROJECTS: Project[] = [
     title: 'LLM Arena',
     date: 'Aug 2026',
     subtext: 'A platform where users can send a single prompt and watch multiple AI models respond simultaneously, then vote for the best response.',
-    url: '',
+    url: 'https://github.com/NipunKachwaha/LLM-Arena',
   },
   {
     title: 'Bookified',
