@@ -6,7 +6,7 @@ export const PROJECTS: Project[] = [
     title: 'Sverkos',
     date: 'Jun 2026',
     subtext: 'A cutting-edge platform for turning ideas into full-stack applications, providing an immersive in-browser IDE and BYOK architecture for seamless AI development.',
-    url: 'https://sverkos.vercel.app',
+    url: 'https://github.com/NipunKachwaha/Sverkos',
   },
   {
     title: 'Horizon',
@@ -36,7 +36,7 @@ export const PROJECTS: Project[] = [
     title: 'Bookified',
     date: 'Oct 2026',
     subtext: 'Voice-first AI book companion platform built with Next.js 16; featuring real-time Vapi voice, ElevenLabs persona synthesis, Clerk authentication, and an interface built with shadcn/ui and Tailwind.',
-    url: '',
+    url: 'https://github.com/NipunKachwaha/Bookified',
   },
   {
     title: 'DJ Gig',
