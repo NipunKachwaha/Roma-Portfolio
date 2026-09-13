@@ -18,7 +18,7 @@ export const PROJECTS: Project[] = [
     title: 'Ghost AI',
     date: 'Jul 2026',
     subtext: 'A Interactive systems architecture builder. It allows users to design and visualize complex systems, providing a collaborative environment for architects and engineers to create efficient and scalable solutions.',
-    url: '',
+    url: 'https://github.com/NipunKachwaha/Ghost-AI',
   },
   {
     title: 'Roomify',
