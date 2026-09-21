@@ -29,6 +29,6 @@ export const FOOTER_LINKS: FooterLink[] = [
     name: 'Resume',
     hoverText: 'Download',
     icon: 'icons/file.svg',
-    url: './Nipun-Resume.pdf',
+    url: './Nipun_Kushwaha_FullStackEngineer_2026.pdf',
   }
 ];
