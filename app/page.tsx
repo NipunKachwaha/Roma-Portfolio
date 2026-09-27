@@ -5,13 +5,15 @@ import ScrollWrapper from "./components/common/ScrollWrapper";
 import Experience from "./components/experience";
 import Footer from "./components/footer";
 import Hero from "./components/hero";
+import SectionSlider from "./components/common/SectionSlider";
 
 const Home = () => {
   return (
     <CanvasLoader>
       <ScrollWrapper>
         <Hero/>
-        <Experience/>
+        {/* <Experience/> */}
+        <SectionSlider/>
         <Footer/>
       </ScrollWrapper>
     </CanvasLoader>

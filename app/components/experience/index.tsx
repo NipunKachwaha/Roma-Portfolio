@@ -4,7 +4,7 @@ import { usePortalStore } from "@stores";
 import { useRef } from "react";
 import { isMobile } from "react-device-detect";
 import * as THREE from 'three';
-import GridTile from "./GridTile";
+import GridTile from "../common/GridTile";
 import Projects from "./projects";
 import Work from "./work";
 
@@ -50,7 +50,8 @@ const Experience = () => {
   };
 
   return (
-    <group position={[0, -41.5, 12]} rotation={[-Math.PI / 2, 0 ,-Math.PI / 2]}>
+    // <group position={[0, -41.5, 12]} rotation={[-Math.PI / 2, 0 ,-Math.PI / 2]}>
+    <group>
       {/* <mesh receiveShadow position={[-5, 0, 0.1]}>
         <planeGeometry args={[10, 5, 1]} />
         <shadowMaterial opacity={0.1} />
@@ -61,7 +62,7 @@ const Experience = () => {
         </group>
 
         <group position={[0, -1, 0]} ref={groupRef}>
-          <GridTile title='WORK AND EDUCATION'
+          <GridTile title='WORK LOG'
             id="work"
             color='#b9c6d6'
             textAlign='left'
