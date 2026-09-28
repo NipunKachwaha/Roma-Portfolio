@@ -1,26 +1,47 @@
 import * as THREE from "three";
-import { WorkTimelinePoint } from "@types";
+import { JourneyTimelinePoint } from "../types";
 
-export const EDUCATION_TIMELINE: WorkTimelinePoint[] = [
+export const JOURNEY_TIMELINE: JourneyTimelinePoint[] = [
 	{
-		year: "Q1 2026",
-		title: "Google Cloud Gen AI Academy",
-		subtitle: "Cohort-based program on AI agents and data integration",
-		position: "left",
-		point: new THREE.Vector3(0, 0, 0),
-	},
-	{
-		year: "2020 - 2024",
-		title: "B.Tech Computer Science",
-		subtitle: "University Name",
+		point: new THREE.Vector3(-5.2, -0.4, 0.0),
+		year: "2022",
+		title: "IICS GTB Nagar",
+		subtitle: "Full-Stack Engineering",
 		position: "right",
-		point: new THREE.Vector3(3, -5, 5),
 	},
 	{
-		year: "2018 - 2020",
-		title: "High School",
-		subtitle: "Board of Education",
+		point: new THREE.Vector3(-6.8, -2.8, -9.8),
+		year: "2023",
+		title: "IICS GTB Nagar",
+		subtitle: "Digital Marketing Intern",
+		position: "right",
+	},
+	{
+		point: new THREE.Vector3(-1.3, -1.5, -11.4),
+		year: "2024",
+		title: "Commonwealth Bank",
+		subtitle: "Software Developer Intern",
 		position: "left",
-		point: new THREE.Vector3(-3, -10, 10),
+	},
+	{
+		point: new THREE.Vector3(-1.3, -3.5, -7.4),
+		year: "2024",
+		title: "Commonwealth Bank",
+		subtitle: "Software Developer Intern",
+		position: "left",
+	},
+	{
+		point: new THREE.Vector3(2.2, -2.55, -10.0),
+		year: "2025",
+		title: "Electronic Arts (EA)",
+		subtitle: "Software Engineer Intern",
+		position: "right",
+	},
+	{
+		point: new THREE.Vector3(2.35, -3.25, -6.5),
+		year: "2026",
+		title: "Living...",
+		subtitle: "Building Next-Gen Web",
+		position: "left",
 	},
 ];

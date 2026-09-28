@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useRef, useEffect, useState } from "react";
 import { usePortalStore, useScrollStore } from "@stores";
-import { useSectionStore } from "@/app/stores/useSectionStore"; 
+import { useSectionStore } from "@/app/stores/useSectionStore";
 
 const SectionToggle = () => {
 	const toggleSection = useSectionStore((state) => state.toggleSection);
@@ -22,11 +22,14 @@ const SectionToggle = () => {
 	}, [scrollProgress, isActive]);
 
 	useGSAP(() => {
+		if (!btnRef.current) return;
 		gsap.to(btnRef.current, {
+			xPercent: -50,
 			opacity: isVisible ? 1 : 0,
 			pointerEvents: isVisible ? "auto" : "none",
 			scale: isVisible ? 1 : 0.8,
 			duration: 0.4,
+			ease: "power2.out",
 		});
 	}, [isVisible]);
 
@@ -34,15 +37,19 @@ const SectionToggle = () => {
 		<button
 			ref={btnRef}
 			onClick={toggleSection}
-			className="fixed bottom-[5rem] left-1/2 -translate-x-1/2 z-10 flex items-center justify-center border border-white/80 text-white/80 hover:text-white hover:border-white hover:scale-105 transition-all duration-300 backdrop-blur-sm"
+			className="fixed bottom-[13vh] left-1/2 z-10 flex items-center justify-center border border-white/80 text-white/80 hover:text-white hover:border-white hover:bg-white/10 transition-colors duration-300 backdrop-blur-sm cursor-pointer"
 			style={{
-				width: "50px",
-				height: "25px",
+				width: "54px",
+				height: "28px",
 				opacity: 0,
 				pointerEvents: "none",
+				transform: "translateX(-50%) scale(0.8)",
 			}}
 		>
-			<span className="text-sm pb-1" style={{ fontFamily: "soria" }}>
+			<span
+				className="text-base leading-none pb-0.5"
+				style={{ fontFamily: "soria" }}
+			>
 				↔
 			</span>
 		</button>

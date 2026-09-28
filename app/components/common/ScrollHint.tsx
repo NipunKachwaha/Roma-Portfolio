@@ -8,13 +8,13 @@ export const ScrollHint = () => {
   const portal = usePortalStore((state) => state.activePortalId);
   const scrollProgress = useScrollStore((state) => state.scrollProgress);
 
-  // Show 'Scroll' for Hero and work portals, 'Pan' for Projects portal.
+  // Show 'Scroll' for Hero, work and journey portals, 'Pan' for Projects ans Skills portal.
   let hintText = '';
   let showScrollHint = false;
   if (!portal) {
     hintText = 'SCROLL';
     showScrollHint = scrollProgress === 0;
-  } else if (portal === 'work') {
+  } else if (portal === 'work' || portal === 'journey') {
     hintText = 'SCROLL';
     showScrollHint = scrollProgress === 0;
   } else {

@@ -6,144 +6,250 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import * as THREE from "three";
 
-import { WORK_TIMELINE } from "@constants";
-import { WorkTimelinePoint } from "@types";
+import { JOURNEY_TIMELINE } from "@constants";
+import { JourneyTimelinePoint } from "@types";
 
 const reusableLeft = new THREE.Vector3(-0.3, 0, -0.1);
 const reusableRight = new THREE.Vector3(0.3, 0, -0.1);
 
-const TimelinePoint = ({ point, diff }: { point: WorkTimelinePoint, diff: number }) => {
-  const getPoint = useMemo(() => {
-    switch (point.position) {
-      case 'left': return reusableLeft;
-      case 'right': return reusableRight;
-      default: return new THREE.Vector3();
-    }
-  }, [point.position]);
+// Starting Point (progress = 0) Front-Center Full Model Camera Settings:
+const START_CAM_X = -0.35; // Front-Center (Left/Right)
+const START_CAM_Y = -36.2; // Full Model Zoom-Out Depth (-35.5 aur door, -37.0 aur paas)
+const START_CAM_Z = 14.1;  // Front-Center Height (Up/Down)
 
-  const textAlign = point.position === 'left' ? 'right' : 'left';
+const TimelinePoint = ({
+	point,
+	diff,
+}: {
+	point: JourneyTimelinePoint;
+	diff: number;
+}) => {
+	const getPoint = useMemo(() => {
+		switch (point.position) {
+			case "left":
+				return reusableLeft;
+			case "right":
+				return reusableRight;
+			default:
+				return new THREE.Vector3();
+		}
+	}, [point.position]);
 
-  const textProps: Partial<TextProps> = useMemo(() => ({
-    font: "./Vercetti-Regular.woff",
-    color: "white",
-    anchorX: textAlign,
-    fillOpacity: 2 - 2 * diff,
-  }), [textAlign, diff]);
+	const textAlign = point.position === "left" ? "right" : "left";
+	const opacity = Math.max(0, Math.min(1, 2 - 2 * diff));
 
-  const titleProps = useMemo(() => ({
-    ...textProps,
-    font: "./soria-font.ttf",
-    fontSize: 0.6,
-    maxWidth: 3,
-  }), [textProps]);
+	const textProps: Partial<TextProps> = useMemo(
+		() => ({
+			font: "./Vercetti-Regular.woff",
+			color: "white",
+			outlineWidth: 0.02,
+			outlineColor: "#111111",
+			anchorX: textAlign,
+			fillOpacity: opacity,
+			outlineOpacity: opacity,
+		}),
+		[textAlign, opacity],
+	);
 
-  return (
-    <group position={point.point} scale={isMobile ? 0.35 : 0.6}>
-      <Box args={[0.2, 0.2, 0.2]} position={[0, 0, -0.1]} scale={[1 - diff, 1 - diff, 1 - diff]}>
-        <meshBasicMaterial color="white" wireframe />
-        <Edges color="white" lineWidth={1.5} />
-      </Box>
-      <group>
-        <group position={getPoint}>
-          <Text {...textProps} fontSize={0.3} position={[-diff / 2, 0, 0]}>
-            {point.year}
-          </Text>
-          <group position={[0, -0.5, 0]}>
-            <Text {...titleProps} fontSize={0.6} maxWidth={3} position={[0, -diff / 2, 0]}>
-              {point.title}
-            </Text>
-            <Text {...textProps} fontSize={0.2} position={[0, -0.4 - diff, 0]}>
-              {point.subtitle}
-            </Text>
-          </group>
-        </group>
-      </group>
-    </group>
-  );
+	const titleProps = useMemo(
+		() => ({
+			...textProps,
+			font: "./soria-font.ttf",
+			fontSize: 0.55,
+			maxWidth: 2.8,
+		}),
+		[textProps],
+	);
+
+	const s = Math.max(0.001, 1 - diff);
+
+	return (
+		<group position={point.point} scale={isMobile ? 0.35 : 0.55}>
+			<Box
+				args={[0.2, 0.2, 0.2]}
+				position={[0, 0, -0.1]}
+				scale={[s, s, s]}
+			>
+				<meshBasicMaterial color="white" wireframe />
+				<Edges color="white" lineWidth={1.5} />
+			</Box>
+			<group>
+				<group position={getPoint}>
+					<Text {...textProps} fontSize={0.28} position={[-diff / 2, 0, 0]}>
+						{point.year}
+					</Text>
+					<group position={[0, -0.48, 0]}>
+						<Text {...titleProps} position={[0, -diff / 2, 0]}>
+							{point.title}
+						</Text>
+						{point.subtitle && (
+							<Text
+								{...textProps}
+								fontSize={0.19}
+								position={[0, -0.4 - diff, 0]}
+							>
+								{point.subtitle}
+							</Text>
+						)}
+					</group>
+				</group>
+			</group>
+		</group>
+	);
 };
 
-const Timeline = ({ progress }: { progress: number }) => {
-  const { camera } = useThree();
-  const isActive = usePortalStore((state) => state.activePortalId === 'journey');
-  const timeline = useMemo(() => WORK_TIMELINE, []);
+const JourneyTimeline = ({ progress }: { progress: number }) => {
+	const { camera } = useThree();
+	const isActive = usePortalStore(
+		(state) => state.activePortalId === "journey",
+	);
+	const timeline = useMemo(() => JOURNEY_TIMELINE, []);
 
-  const curve = useMemo(() => new THREE.CatmullRomCurve3(timeline.map(p => p.point), false), [timeline]);
-  const curvePoints = useMemo(() => curve.getPoints(500), [curve]);
-  const visibleCurvePoints = useMemo(() => curvePoints.slice(0, Math.max(1, Math.ceil(progress * curvePoints.length))), [curvePoints, progress]);
-  const visibleTimelinePoints = useMemo(() => timeline.slice(0, Math.max(1, Math.round(progress * (timeline.length - 1) + 1))), [timeline, progress]);
+	const curve = useMemo(
+		() => new THREE.CatmullRomCurve3(timeline.map((p) => p.point), false),
+		[timeline],
+	);
+	const curvePoints = useMemo(() => curve.getPoints(500), [curve]);
+	const visibleCurvePoints = useMemo(
+		() =>
+			curvePoints.slice(
+				0,
+				Math.max(1, Math.ceil(progress * curvePoints.length)),
+			),
+		[curvePoints, progress],
+	);
+	const visibleTimelinePoints = useMemo(
+		() =>
+			timeline.slice(
+				0,
+				Math.max(1, Math.round(progress * (timeline.length - 1) + 1)),
+			),
+		[timeline, progress],
+	);
 
-  const [visibleDashedCurvePoints, setVisibleDashedCurvePoints] = useState<THREE.Vector3[]>([]);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+	const [visibleDashedCurvePoints, setVisibleDashedCurvePoints] = useState<
+		THREE.Vector3[]
+	>([]);
+	const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  useFrame((_, delta) => {
-    if (isActive) {
-      const position = curve.getPoint(progress);
-      camera.position.x = THREE.MathUtils.damp(camera.position.x, (isMobile ? -1 : -2) + position.x, 4, delta);
-      camera.position.y = THREE.MathUtils.damp(camera.position.y, -39 + position.z, 4, delta);
-      camera.position.z = THREE.MathUtils.damp(camera.position.z, 13 - position.y, 4, delta);
-    }
-  });
+	useFrame((_, delta) => {
+		if (isActive) {
+			const position = curve.getPoint(progress);
 
-  const groupRef = useRef<THREE.Group>(null);
+			const scrollBlend = Math.min(progress * 4.5, 1);
 
-  useEffect(() => {
-    const tl = gsap.timeline();
-    if (groupRef.current) {
-      tl.to(groupRef.current.scale, {
-        x: isActive ? 1 : 0,
-        y: isActive ? 1 : 0,
-        z: isActive ? 1 : 0,
-        duration: 1,
-        delay: isActive ? 0.4 : 0,
-      });
-      tl.to(groupRef.current.position, {
-        y: isActive ? 0 : -2,
-        duration: 1,
-        delay: isActive ? 0.4 : 0,
-      }, 0);
-    }
+			const followX = (isMobile ? -0.3 : -0.5) + position.x * 0.65;
+			const followY = -38.8 + position.z * 0.85;
+			const followZ = 13.4 - position.y * 0.6;
 
-    if (isActive) {
-      let i = 0;
-      clearInterval(intervalRef.current!);
-      setTimeout(() => {
-        intervalRef.current = setInterval(() => {
-          const p = i++ / 100;
-          setVisibleDashedCurvePoints(curvePoints.slice(0, Math.max(1, Math.ceil(p * curvePoints.length))));
-          if (i > 100 && intervalRef.current) clearInterval(intervalRef.current);
-        }, 10);
-      }, 1000);
-    } else {
-      // Reset alongside interval cleanup; this state mirrors the timer.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setVisibleDashedCurvePoints([]);
-      clearInterval(intervalRef.current!);
-    }
+			const targetX = THREE.MathUtils.lerp(START_CAM_X, followX, scrollBlend);
+			const targetY = THREE.MathUtils.lerp(START_CAM_Y, followY, scrollBlend);
+			const targetZ = THREE.MathUtils.lerp(START_CAM_Z, followZ, scrollBlend);
 
-    return () => clearInterval(intervalRef.current!);
-  }, [isActive]);
+			camera.position.x = THREE.MathUtils.damp(
+				camera.position.x,
+				targetX,
+				4,
+				delta,
+			);
+			camera.position.y = THREE.MathUtils.damp(
+				camera.position.y,
+				targetY,
+				4,
+				delta,
+			);
+			camera.position.z = THREE.MathUtils.damp(
+				camera.position.z,
+				targetZ,
+				4,
+				delta,
+			);
 
-  return (
-    <group position={[0, -0.1, -0.1]}>
-      <Line points={visibleCurvePoints} color="white" lineWidth={3} />
-      {visibleDashedCurvePoints.length > 0 && (
-        <Line
-          points={visibleDashedCurvePoints}
-          color="white"
-          lineWidth={0.5}
-          dashed
-          dashSize={0.25}
-          gapSize={0.25}
-        />
-      )}
-      <group ref={groupRef}>
-        {visibleTimelinePoints.map((point, i) => {
-          const diff = Math.min(2 * Math.max(i - (progress * (timeline.length - 1)), 0), 1);
-          return <TimelinePoint point={point} key={i} diff={diff} />;
-        })}
-      </group>
-    </group>
-  );
+			camera.rotation.x = THREE.MathUtils.damp(
+				camera.rotation.x,
+				-Math.PI / 2,
+				4,
+				delta,
+			);
+			camera.rotation.y = THREE.MathUtils.damp(camera.rotation.y, 0, 4, delta);
+			camera.rotation.z = THREE.MathUtils.damp(camera.rotation.z, 0, 4, delta);
+		}
+	});
+
+	const groupRef = useRef<THREE.Group>(null);
+
+	useEffect(() => {
+		const tl = gsap.timeline();
+		if (groupRef.current) {
+			tl.to(groupRef.current.scale, {
+				x: isActive ? 1 : 0,
+				y: isActive ? 1 : 0,
+				z: isActive ? 1 : 0,
+				duration: 1,
+				delay: isActive ? 0.4 : 0,
+			});
+			tl.to(
+				groupRef.current.position,
+				{
+					y: isActive ? 0 : -2,
+					duration: 1,
+					delay: isActive ? 0.4 : 0,
+				},
+				0,
+			);
+		}
+
+		if (isActive) {
+			let i = 0;
+			clearInterval(intervalRef.current!);
+			setTimeout(() => {
+				intervalRef.current = setInterval(() => {
+					const p = i++ / 100;
+					setVisibleDashedCurvePoints(
+						curvePoints.slice(
+							0,
+							Math.max(1, Math.ceil(p * curvePoints.length)),
+						),
+					);
+					if (i > 100 && intervalRef.current)
+						clearInterval(intervalRef.current);
+				}, 10);
+			}, 1000);
+		} else {
+			setVisibleDashedCurvePoints([]);
+			clearInterval(intervalRef.current!);
+		}
+
+		return () => clearInterval(intervalRef.current!);
+	}, [isActive, curvePoints]);
+
+	return (
+		<group position={[0, -0.1, -0.1]}>
+			<Line points={visibleCurvePoints} color="white" lineWidth={3} />
+			{visibleDashedCurvePoints.length > 0 && (
+				<Line
+					points={visibleDashedCurvePoints}
+					color="white"
+					lineWidth={0.5}
+					dashed
+					dashSize={0.25}
+					gapSize={0.25}
+				/>
+			)}
+			<group ref={groupRef}>
+				{visibleTimelinePoints.map((point, i) => {
+					const diff =
+						i === 0
+							? Math.max(0, 1 - progress * 20)
+							: Math.min(
+									2 * Math.max(i - progress * (timeline.length - 1), 0),
+									1,
+								);
+					return <TimelinePoint point={point} key={i} diff={diff} />;
+				})}
+			</group>
+		</group>
+	);
 };
 
-export default Timeline;
+export default JourneyTimeline;

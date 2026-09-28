@@ -1,51 +1,29 @@
-import { ScrollControls } from "@react-three/drei";
 import { usePortalStore, useScrollStore } from "@stores";
-import { useEffect } from "react";
+import gsap from "gsap";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
-import { Memory } from "@/app/components/models/Memory";
+import { Zalipie } from "@/app/components/models/Zalipie";
 import JourneyTimeline from "./JourneyTimeline";
+import { useJourneyScroll } from "./useJourneyScroll";
 
 const Journey = () => {
 	const isActive = usePortalStore(
 		(state) => state.activePortalId === "journey",
 	);
-	const { scrollProgress, setScrollProgress } = useScrollStore();
+	const scrollProgress = useScrollStore((state) => state.scrollProgress);
+	const modelRef = useRef<THREE.Group>(null);
 
-	const handleScroll = (event: Event) => {
-		const target = event.target as HTMLElement;
-		const scrollTop = target.scrollTop;
-		const scrollHeight = target.scrollHeight - target.clientHeight;
-		const progress = Math.min(Math.max(scrollTop / scrollHeight, 0), 1);
-		setScrollProgress(progress);
-	};
+	useJourneyScroll(isActive);
 
 	useEffect(() => {
-		if (isActive) {
-			const scrollWrapper = document.querySelector(
-				'div[style*="z-index: -1"]',
-			) as HTMLElement;
-			const originalScrollWrapper = document.querySelector(
-				'div[style*="z-index: 1"]',
-			) as HTMLElement;
-			setScrollProgress(0);
-			scrollWrapper.addEventListener("scroll", handleScroll);
-			scrollWrapper.style.zIndex = "1";
-			originalScrollWrapper.style.zIndex = "-1";
-		} else {
-			const scrollWrapper = document.querySelector(
-				'div[style*="z-index: 1"]',
-			) as HTMLElement;
-			const originalScrollWrapper = document.querySelector(
-				'div[style*="z-index: -1"]',
-			) as HTMLElement;
-
-			if (scrollWrapper) {
-				scrollWrapper.scrollTo({ top: 0, behavior: "smooth" });
-				setScrollProgress(0);
-				scrollWrapper.removeEventListener("scroll", handleScroll);
-				scrollWrapper.style.zIndex = "-1";
-				originalScrollWrapper.style.zIndex = "1";
-			}
+		if (modelRef.current) {
+			gsap.to(modelRef.current.position, {
+				x: isActive ? -1.9 : -1.9,
+				y: isActive ? -1.1 : -1.1,
+				z: isActive ? -6.8 : -8.5,
+				duration: 1,
+				ease: "power2.inOut",
+			});
 		}
 	}, [isActive]);
 
@@ -55,13 +33,13 @@ const Journey = () => {
 				<planeGeometry args={[4, 4, 1]} />
 				<shadowMaterial opacity={0.1} />
 			</mesh>
-			<ScrollControls style={{ zIndex: -1 }} pages={2} maxSpeed={0.4}>
-				<Memory
-					scale={new THREE.Vector3(5, 5, 5)}
-					position={new THREE.Vector3(0, -6, 1)}
+			<group ref={modelRef} position={[-1.9, -1.1, -8.5]}>
+				<Zalipie
+					scale={new THREE.Vector3(0.5, 0.5, 0.72)}
+					rotation={[0, 0, 0]}
 				/>
-				<JourneyTimeline progress={isActive ? scrollProgress : 0} />
-			</ScrollControls>
+			</group>
+			<JourneyTimeline progress={isActive ? scrollProgress : 0} />
 		</group>
 	);
 };

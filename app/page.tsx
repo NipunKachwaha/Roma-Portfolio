@@ -2,7 +2,6 @@
 
 import CanvasLoader from "./components/common/CanvasLoader";
 import ScrollWrapper from "./components/common/ScrollWrapper";
-import Experience from "./components/experience";
 import Footer from "./components/footer";
 import Hero from "./components/hero";
 import SectionSlider from "./components/common/SectionSlider";
@@ -12,7 +11,6 @@ const Home = () => {
     <CanvasLoader>
       <ScrollWrapper>
         <Hero/>
-        {/* <Experience/> */}
         <SectionSlider/>
         <Footer/>
       </ScrollWrapper>
