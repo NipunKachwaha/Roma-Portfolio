@@ -14,7 +14,7 @@ const SectionToggle = () => {
 	const [isVisible, setIsVisible] = useState(false);
 
 	useEffect(() => {
-		if (scrollProgress > 0.8 && !isActive) {
+		if (scrollProgress > 0.95 && !isActive) {
 			setIsVisible(true);
 		} else {
 			setIsVisible(false);
@@ -33,10 +33,20 @@ const SectionToggle = () => {
 		});
 	}, [isVisible]);
 
+	const handleToggle = () => {
+		const mainScrollEl = document.querySelector(
+			'div[style*="z-index: 1"]',
+		) as HTMLElement | null;
+		if (mainScrollEl) {
+			mainScrollEl.scrollTop = mainScrollEl.scrollHeight;
+		}
+		toggleSection();
+	};
+
 	return (
 		<button
 			ref={btnRef}
-			onClick={toggleSection}
+			onClick={handleToggle}
 			className="fixed bottom-[13vh] left-1/2 z-10 flex items-center justify-center border border-white/80 text-white/80 hover:text-white hover:border-white hover:bg-white/10 transition-colors duration-300 backdrop-blur-sm cursor-pointer"
 			style={{
 				width: "54px",

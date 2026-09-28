@@ -14,8 +14,8 @@ const reusableRight = new THREE.Vector3(0.3, 0, -0.1);
 
 // Starting Point (progress = 0) Front-Center Full Model Camera Settings:
 const START_CAM_X = -0.35; // Front-Center (Left/Right)
-const START_CAM_Y = -36.2; // Full Model Zoom-Out Depth (-35.5 aur door, -37.0 aur paas)
-const START_CAM_Z = 14.1;  // Front-Center Height (Up/Down)
+const START_CAM_Y = -36.2; // Full Model Zoom-Out Depth
+const START_CAM_Z = 14.1; // Front-Center Height (Up/Down)
 
 const TimelinePoint = ({
 	point,
@@ -55,38 +55,48 @@ const TimelinePoint = ({
 		() => ({
 			...textProps,
 			font: "./soria-font.ttf",
-			fontSize: 0.55,
-			maxWidth: 2.8,
+			fontSize: 0.52,
+			maxWidth: 4.2, 
+			lineHeight: 0.95,
 		}),
 		[textProps],
 	);
 
+	const isMultiLineTitle = point.title.length > 22;
+	const subtitleYOffset = isMultiLineTitle ? -1.12 : -0.62;
+
 	const s = Math.max(0.001, 1 - diff);
+
+	if (diff >= 1) return null;
 
 	return (
 		<group position={point.point} scale={isMobile ? 0.35 : 0.55}>
-			<Box
-				args={[0.2, 0.2, 0.2]}
-				position={[0, 0, -0.1]}
-				scale={[s, s, s]}
-			>
+			<Box args={[0.2, 0.2, 0.2]} position={[0, 0, -0.1]} scale={[s, s, s]}>
 				<meshBasicMaterial color="white" wireframe />
 				<Edges color="white" lineWidth={1.5} />
 			</Box>
 			<group>
 				<group position={getPoint}>
-					<Text {...textProps} fontSize={0.28} position={[-diff / 2, 0, 0]}>
+					<Text
+						{...textProps}
+						anchorY="bottom"
+						fontSize={0.25}
+						position={[-diff / 2, 0.08, 0]}
+					>
 						{point.year}
 					</Text>
-					<group position={[0, -0.48, 0]}>
-						<Text {...titleProps} position={[0, -diff / 2, 0]}>
+
+					<group position={[0, -0.04, 0]}>
+						<Text {...titleProps} anchorY="top" position={[0, -diff / 2, 0]}>
 							{point.title}
 						</Text>
 						{point.subtitle && (
 							<Text
 								{...textProps}
+								anchorY="top"
 								fontSize={0.19}
-								position={[0, -0.4 - diff, 0]}
+								maxWidth={4.5}
+								position={[0, subtitleYOffset - diff, 0]}
 							>
 								{point.subtitle}
 							</Text>
@@ -106,7 +116,11 @@ const JourneyTimeline = ({ progress }: { progress: number }) => {
 	const timeline = useMemo(() => JOURNEY_TIMELINE, []);
 
 	const curve = useMemo(
-		() => new THREE.CatmullRomCurve3(timeline.map((p) => p.point), false),
+		() =>
+			new THREE.CatmullRomCurve3(
+				timeline.map((p) => p.point),
+				false,
+			),
 		[timeline],
 	);
 	const curvePoints = useMemo(() => curve.getPoints(500), [curve]);
@@ -225,7 +239,9 @@ const JourneyTimeline = ({ progress }: { progress: number }) => {
 
 	return (
 		<group position={[0, -0.1, -0.1]}>
-			<Line points={visibleCurvePoints} color="white" lineWidth={3} />
+			{progress > 0.005 && (
+				<Line points={visibleCurvePoints} color="white" lineWidth={3} />
+			)}
 			{visibleDashedCurvePoints.length > 0 && (
 				<Line
 					points={visibleDashedCurvePoints}
